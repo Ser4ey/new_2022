@@ -1,0 +1,6 @@
+info.py
+creds.json
+.idea
+venv
+geckodriver.log
+.idea/misc.xml
