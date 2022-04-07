@@ -3,18 +3,10 @@ import time
 import info
 from bs4 import BeautifulSoup
 import conversion_val
-from multiprocessing.dummy import Pool
-
 import httplib2
 from googleapiclient import discovery
 from oauth2client.service_account import ServiceAccountCredentials
-
-
-def log_in_driver(driver_class):
-    login = driver_class.bet365_login
-    passwd = driver_class.bet365_password
-    driver_class.log_in_bet365_v2(login, passwd)
-
+from selenium import webdriver
 
 # Файл, полученный в Google Developer Console
 CREDENTIALS_FILE = 'creds.json'
@@ -44,8 +36,6 @@ values = service.spreadsheets().values().batchUpdate(
     }
 ).execute()
 
-
-
 line_for_google = 1
 def google_table(line_for_google, a1,a2,a3,a4,a5,a6,a7,a8,a9,a10):
     values = service.spreadsheets().values().batchUpdate(
@@ -74,79 +64,13 @@ def format_string(s: str):
     return key
 
 
-def get_new_accounts_from_info(list_of_start_info):
-    'Запускаем рабочий аккаунт'
-    # запускаем аккаунты
-    List_of_bet_account = []
-    countries = []
-    Set_of_countries = set()
-
-    for i in list_of_start_info:
-        countries.append(i[3])
-
-    for i in countries:
-        Set_of_countries.add(i)
-
-    Dict_of_Drivers_count = {}
-
-    for i in Set_of_countries:
-        Dict_of_Drivers_count[i] = countries.count(i)
-
-    start_time_for_all = time.time()
-    for i in Set_of_countries:
-        print(f'Открываем {Dict_of_Drivers_count[i]} аккаунта для {i}')
-        start_time_for_type = time.time()
-        accounts_get_class = GetWorkAccountsList(number_of_accounts=Dict_of_Drivers_count[i], vpn_country=i)
-        Accounts = accounts_get_class.return_Browser_List()
-
-        for account_info in list_of_start_info:
-            bet365login, bet365password, bet_value, vpn_country = account_info
-            if vpn_country != i:
-                continue
-
-            driver_class = FireFoxDriverMainNoAutoOpen(
-                driver=Accounts.pop(-1),
-                login=bet365login,
-                password=bet365password,
-                bet_value=bet_value,
-                vpn_country=vpn_country
-            )
-
-            List_of_bet_account.append(driver_class)
-        print(f'{Dict_of_Drivers_count[i]} аккаунтов для {i} открыты за {time.time() - start_time_for_type}')
-
-    print(f'Все аккаунты успешно открыты за {time.time() - start_time_for_all}')
-    # авторизация аккаунтов
-    with Pool(processes=len(List_of_bet_account)) as p:
-        p.map(log_in_driver, List_of_bet_account)
-
-    print(f'Все аккаунты успешно авторизованы!')
-
-    return List_of_bet_account
-
-
 print(f'Login: {info.user_name} Password: {info.password}')
-# driver_class = GetWorkAccountWithHands()
-# driver_class = driver_class.get_driver()
-#
-# # driver_class.log_in_bet365_v2(info.user_name, info.password)
-# driver = FireFoxDriverMainNoAutoOpen(
-#     driver=driver_class,
-#     login=info.user_name,
-#     password=info.password,
-#     bet_value='0.1',
-#     vpn_country='UK'
-# )
-#
-
 def get_account():
-    from selenium import webdriver
 
     options = webdriver.ChromeOptions()
 
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
     options.add_experimental_option('useAutomationExtension', False)
-    path_to_chromedriver = r'C:\Users\Sergey\PycharmProjects\365_statistika\chromedriver.exe'
 
     path_to_user_dir = r'C:\Users\Sergey\AppData\Local\Google\Chrome\User Data'
     profile_name = 'Default'
@@ -158,21 +82,7 @@ def get_account():
 
     return driver
 
-
 driver = get_account()
-input('Аккаунт готов')
-
-# driver1 = get_new_accounts_from_info(
-#     [
-#         [info.user_name, info.password, '0.1', 'UK']
-#     ],
-# )
-#
-# driver1 = driver1[0]
-#
-# driver = driver1.driver
-
-
 
 try:
     # закрытие всплывающего окна
@@ -431,9 +341,4 @@ for link1 in link_list:
         google_table(line_for_google, id, data_day, data_time, selectionname, row_odds, row_eventname,
                      game_or_not, value_bet, return_value, exodus_)
         line_for_google+=1
-#
-# with open(f"mega.json", "w", encoding="utf-8") as file:
-#     json.dump(SportsBetting, file, indent=4, ensure_ascii=False)
-#
-#
 
