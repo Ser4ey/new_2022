@@ -65,17 +65,16 @@ def format_string(s: str):
 
 
 print(f'Login: {info.user_name} Password: {info.password}')
-def get_account():
 
+
+def get_account():
     options = webdriver.ChromeOptions()
 
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
     options.add_experimental_option('useAutomationExtension', False)
 
-    path_to_user_dir = r'C:\Users\Sergey\AppData\Local\Google\Chrome\User Data'
-    profile_name = 'Default'
-    options.add_argument(f'user-data-dir={path_to_user_dir}')
-    options.add_argument(f"profile-directory={profile_name}")
+    options.add_argument(f'user-data-dir={info.path_to_chrome_user_dir}')
+    options.add_argument(f"profile-directory={info.chrome_profile_name}")
 
     driver = webdriver.Chrome(options=options)
     input('Войдите в аккаунт и нажмите Enter:')
@@ -83,6 +82,7 @@ def get_account():
     return driver
 
 driver = get_account()
+
 
 try:
     # закрытие всплывающего окна
