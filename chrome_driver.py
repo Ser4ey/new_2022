@@ -19,6 +19,11 @@ class ChromeDriver:
 
     def login_in_bet365(self, login=info.user_name, password=info.password):
         self.driver.get('https://www.bet365.com/')
+        print(f'Login: {login}')
+        print(f'Password: {password}')
+        input('Войдите в аккаунт и нажмите Enter:')
+        return
+        """
         time.sleep(7)
 
         # Cookies
@@ -37,11 +42,13 @@ class ChromeDriver:
             self.driver.find_element_by_class_name('hm-MainHeaderRHSLoggedOutWide_LoginContainer').click()
         except:
             return f'Не удалось войти в аккаунт {login}!'
-
+        time.sleep(3)
+        self.driver.find_element_by_class_name('lms-StandardLogin_Username').clear()
+        time.sleep(0.9)
         self.driver.find_element_by_class_name('lms-StandardLogin_Username').send_keys(login)
         time.sleep(0.7)
         self.driver.find_element_by_class_name('lms-StandardLogin_Password').send_keys(password)
-        time.sleep(0.7)
+        time.sleep(1)
 
         self.driver.find_element_by_class_name('lms-LoginButton').click()
         time.sleep(3)
@@ -77,7 +84,7 @@ class ChromeDriver:
             pass
 
         print(f'Вы успешно вошли в аккаунт {login}')
-        return 'Успешный вход в аккаунт'
+        return 'Успешный вход в аккаунт'"""
 
 
 driverClass = ChromeDriver()
