@@ -7,6 +7,8 @@ import httplib2
 from googleapiclient import discovery
 from oauth2client.service_account import ServiceAccountCredentials
 from selenium import webdriver
+from chrome_driver import needed_driver
+
 
 # Файл, полученный в Google Developer Console
 CREDENTIALS_FILE = 'creds.json'
@@ -64,24 +66,23 @@ def format_string(s: str):
     return key
 
 
-print(f'Login: {info.user_name} Password: {info.password}')
-
-
-def get_account():
-    options = webdriver.ChromeOptions()
-
-    options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    options.add_experimental_option('useAutomationExtension', False)
-
-    options.add_argument(f'user-data-dir={info.path_to_chrome_user_dir}')
-    options.add_argument(f"profile-directory={info.chrome_profile_name}")
-
-    driver = webdriver.Chrome(options=options)
-    input('Войдите в аккаунт и нажмите Enter:')
-
-    return driver
-
-driver = get_account()
+# print(f'Login: {info.user_name} Password: {info.password}')
+# def get_account():
+#     options = webdriver.ChromeOptions()
+#
+#     options.add_experimental_option("excludeSwitches", ["enable-automation"])
+#     options.add_experimental_option('useAutomationExtension', False)
+#
+#     options.add_argument(f'user-data-dir={info.path_to_chrome_user_dir}')
+#     options.add_argument(f"profile-directory={info.chrome_profile_name}")
+#
+#     driver = webdriver.Chrome(options=options)
+#     input('Войдите в аккаунт и нажмите Enter:')
+#
+#     return driver
+#
+# driver = get_account()
+driver = needed_driver
 
 
 try:
