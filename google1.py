@@ -1,5 +1,5 @@
 from pprint import pprint
-
+import info
 import httplib2
 # import apiclient.discovery
 from googleapiclient import discovery
@@ -9,7 +9,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 # Файл, полученный в Google Developer Console
 CREDENTIALS_FILE = 'creds.json'
 # ID Google Sheets документа (можно взять из его URL)
-spreadsheet_id = '1IXg91BEJ2w_yLtIs7ar340u9r6W_jng7tAZRv8eYEo0'
+spreadsheet_id = info.spreadsheet_id
 
 # Авторизуемся и получаем service — экземпляр доступа к API
 credentials = ServiceAccountCredentials.from_json_keyfile_name(
