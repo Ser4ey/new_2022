@@ -339,7 +339,19 @@ for link1 in link_list:
 
         })
 
-        google_table(line_for_google, id, data_day, data_time, selectionname, row_odds, row_eventname,
-                     game_or_not, value_bet, return_value, exodus_)
+        s_counter = 0
+        while True:
+            try:
+                google_table(line_for_google, id, data_day, data_time, selectionname, row_odds, row_eventname,
+                             game_or_not, value_bet, return_value, exodus_)
+                break
+            except Exception as er:
+                print(f'Ошибка записи данных в гугл таблицу: {er}')
+                s_counter += 1
+                time.sleep(5)
+                if s_counter >= 7:
+                    print('Невозможно записать данные')
+                    break
+
         line_for_google+=1
 
