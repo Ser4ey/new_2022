@@ -36,7 +36,7 @@ values = service.spreadsheets().values().batchUpdate(
     body={
         "valueInputOption": "USER_ENTERED",
         "data": [
-            {f"range": f"A{1}:I{1}",
+            {f"range": f"A{1}:J{1}",
              "majorDimension": "ROWS",
              "values": [["код ставки", "дата", "время", "название команды-победителя", "коэффициент",
                          "название команд общее", "победа/поражение", "сумма ставки", "сумма выигрыша", "исход"]]},
